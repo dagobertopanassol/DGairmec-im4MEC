@@ -172,17 +172,27 @@ def create_tissue_tiles(
 ):
 
     print(f"tile size is {tile_size_microns} um")
-
-    # Compute the tile size in pixels from the desired tile size in microns and the image resolution
     assert (
-        openslide.PROPERTY_NAME_MPP_X in wsi.properties
+        wsi.properties['tiff.XResolution']
     ), "microns per pixel along X-dimension not available"
     assert (
-        openslide.PROPERTY_NAME_MPP_Y in wsi.properties
+        #openslide.PROPERTY_NAME_MPP_Y  in wsi.properties
+        wsi.properties['tiff.YResolution']
     ), "microns per pixel along Y-dimension not available"
+    ## wsi.properties['tiff.YResolution']
+    mpp_x = float(wsi.properties['tiff.XResolution'])
+    mpp_y = float(wsi.properties['tiff.YResolution'])
 
-    mpp_x = float(wsi.properties[openslide.PROPERTY_NAME_MPP_X])
-    mpp_y = float(wsi.properties[openslide.PROPERTY_NAME_MPP_Y])
+    # Compute the tile size in pixels from the desired tile size in microns and the image resolution
+    #assert (
+     #   openslide.PROPERTY_NAME_MPP_X in wsi.properties
+    #), "microns per pixel along X-dimension not available"
+    #assert (
+    #    openslide.PROPERTY_NAME_MPP_Y in wsi.properties
+    #), "microns per pixel along Y-dimension not available"
+
+    #mpp_x = float(wsi.properties[openslide.PROPERTY_NAME_MPP_X])
+    #mpp_y = float(wsi.properties[openslide.PROPERTY_NAME_MPP_Y])
     mpp_scale_factor = min(mpp_x, mpp_y)
     if mpp_x != mpp_y:
         print(
