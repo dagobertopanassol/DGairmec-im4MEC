@@ -50,6 +50,7 @@ This repository contains a fork of the [original MoCo codebase](https://github.c
 
 After you have extracted the tiles that you want to use to train the feature extractor, you can invoke the MoCoV2 training routine using something like the command below. We encourage users to read the MoCo [README](/moco/README.md) and source code for more details on how to use it.
 
+"Este repositório contém um fork da base de código MoCo original, com algumas pequenas modificações: Adicionada uma rotina de redução da taxa de aprendizado de cosseno com aquecimento. Alterado o pipeline de aumento de imagem para melhores resultados em dados HE WSI. Depois de extrair os blocos que deseja usar para treinar o extrator de recursos, você pode invocar a rotina de treinamento do MoCoV2 usando algo como o comando abaixo. Incentivamos os usuários a ler o README e o código-fonte do MoCo para obter mais detalhes sobre como usá-lo."
 ```sh
 python moco/main_moco.py \
 moco_tiles \
