@@ -76,6 +76,9 @@ moco_tiles \
 Next, each WSI in the dataset needs to be converted into a bag of feature vectors using the feature extractor model that we trained in the previous step using self-supervised learning.
 
 The below example command will use the trained feature extraction model to convert each tile in the WSI into a feature vector. All feature vectors of a WSI will be saved together in a 'feature bag' in the `.h5` file format. Additionally, a quality control image will be generated in the same output directory so the user can evaluate the quality of the tissue segmentation and tiling. Both output files will be named after the input WSI, suffixed with `*_features.h5` and `*_features_QC.png`, respectively.
+"Em seguida, cada WSI no conjunto de dados precisa ser convertido em um conjunto de vetores de recursos usando o modelo extrator de recursos que treinamos na etapa anterior usando aprendizado auto-supervisionado.
+
+O comando de exemplo abaixo usará o modelo de extração de recursos treinado para converter cada bloco no WSI em um vetor de recursos. Todos os vetores de recursos de um WSI serão salvos juntos em um 'pacote de recursos' no formato de arquivo .h5. Além disso, uma imagem de controle de qualidade será gerada no mesmo diretório de saída para que o usuário possa avaliar a qualidade da segmentação e do ladrilho do tecido. Ambos os arquivos de saída serão nomeados de acordo com o WSI de entrada, com o sufixo *_features.h5 e *_features_QC.png, respectivamente."
 
 ```sh
 python preprocess.py \
@@ -97,6 +100,14 @@ Note that this is a very compute-intensive script. While it can be run on the CP
 
 Creating feature bags for each WSI in your dataset is an 'embarassingly parallel' problem. Just like with the `sample_tiles.py` step, we encourage users to create their own wrapper scripts to exploit the potential for parallelism of their systems.
 
+"Consulte o código do script `preprocess.py` para obter uma explicação dos argumentos da linha de comando.
+
+Observe que fornecer um ponto de verificação de pesos `--checkpoint` é opcional. Se você quiser executar esta etapa usando um extrator de recursos com pesos ImageNet, você pode usar o sinalizador `--imagenet`.
+
+Observe que este é um script que exige muita computação. Embora possa ser executado na CPU, é aconselhável ter uma GPU disponível, especialmente para conjuntos de dados maiores.
+
+Criar pacotes de recursos para cada WSI em seu conjunto de dados é um problema “embaraçosamente paralelo”. Assim como na etapa `sample_tiles.py`, encorajamos os usuários a criar seus próprios scripts wrapper para explorar o potencial de paralelismo de seus sistemas."
+
 ## Prepare your dataset
 The structure of your experiment should be defined in a CSV file. See `labels.csv` for an example. This file should contain a single line for each WSI in your dataset.
 
@@ -108,6 +119,8 @@ The structure of your experiment should be defined in a CSV file. See `labels.cs
 ## Training
 
 To train the attention model that performs the final WSI-level classification, we use the `train.py` script. This script has a k-fold cross-validation routine built in. The below example command will run the training + validation loop for each set of hyperparameters hardcoded in the `main()` function of `train.py` and log the results to Tensorboard. Model checkpoints will not be saved. Note that the cross-validation routine can be parallized if you have the hardware for that by running multiple instances of `train.py` at a time.
+
+"Para treinar o modelo de atenção que realiza a classificação final em nível WSI, usamos o script `train.py`. Este script possui uma rotina de validação cruzada k-fold integrada. O comando de exemplo abaixo executará o loop de treinamento + validação para cada conjunto de hiperparâmetros codificados na função `main()` de `train.py` e registrará os resultados em Quadro tensor. Os pontos de verificação do modelo não serão salvos. Observe que a rotina de validação cruzada pode ser paralisada se você tiver o hardware para isso, executando várias instâncias de `train.py` por vez."
 
 ```sh
 for fold in 0 1 2 3
